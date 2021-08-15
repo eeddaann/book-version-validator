@@ -49,14 +49,14 @@ def squeeze(txt: dict) -> list:
             lst.append([
                 txt[seq[0]][0],
                 seq[0],
-                seq,
+                str(seq[0]),
                 txt[seq[0]][1]
             ])
         else: # if it's a range of pages
             lst.append([
                 txt[seq[0]][0] + " - " + txt[seq[1]][0],
                 seq[0],
-                seq,
+                str(seq[0]) + "-" + str(seq[1]),
                 txt[seq[0]][1]
             ])
             
