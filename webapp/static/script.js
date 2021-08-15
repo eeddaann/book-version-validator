@@ -39,7 +39,13 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "static/pdf.worker.js";
 			});
 		});
 	}
-
+	document.getElementById('go_first').addEventListener('click', (e) => {
+		if(myState.pdf == null || myState.currentPage == 1) 
+			return;
+		myState.currentPage = 1;
+		document.getElementById("current_page").value = myState.currentPage;
+		render();
+	});
 	document.getElementById('go_previous').addEventListener('click', (e) => {
 		if(myState.pdf == null || myState.currentPage == 1) 
 			return;
