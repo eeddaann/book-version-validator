@@ -1,0 +1,45 @@
+body {
+  background-color:#5089C6
+}
+#uploader {
+  background-color: #5692ca2c;
+  border: 5px dashed #FFAA4C;
+  border-radius:26px;
+  -moz-border-radius:26px;
+  -webkit-border-radius: 25px
+}
+#BigTable {
+  display: none;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius: 5px
+}
+h1 {
+  text-align:center;
+}
+td, th {
+  border: 0px solid  #001E6C;
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color:#FFAA4C;
+}
+
+#canvas_container {
+width: 800px;
+height: 450px;
+overflow: auto;
+}
+
+#canvas_container {
+background:#035397;
+text-align: center;
+border: solid 3px;
+}

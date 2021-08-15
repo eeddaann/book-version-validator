@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>📚 book version validator 🔍</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dropzone.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <h1>📚 book version validator 🔍</h1>
+    <form action="{{ url_for('upload_files') }}" class="dropzone" id="uploader">
+    </form>
+    <table id="BigTable">
+        <tr>
+            <td>
+                <table id="resultTable">
+                    <tr>
+                        <th>pages</th>
+                        <th>Change No.</th>
+                        <th>PDF</th>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <div id="my_pdf_viewer">
+                        <div id="canvas_container">
+                            <canvas id="pdf_renderer"></canvas>
+                        </div>
+                    
+                        <div id="navigation_controls">
+                            <button id="go_previous">Previous</button>
+                            <input id="current_page" value="1" type="number"/>
+                            <button id="go_next">Next</button>
+                        </div>
+                    
+                        <div id="zoom_controls">  
+                            <button id="zoom_in">+</button>
+                            <button id="zoom_out">-</button>
+                        </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script src="{{ url_for('static', filename='pdf.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='dropzone.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='script.js') }}" type="text/javascript"></script>
+  </body>
+</html>
