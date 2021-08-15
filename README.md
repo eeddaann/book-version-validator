@@ -6,9 +6,11 @@ Sometimes we receive updates for these books and have to replace some pages.
 In order to make sure that the scanned book is up to date, we have to follow the list of the updated pages and verify that they are in the correct version.
 
 a sample change table may look like:
+
 <img src="images/table.png"/>
 
 and page ```ii``` which should be in version 1, will have the following footer:
+
 <img src="images/samplechange.png"/>
 
 this project use OCR (Optical character recognition) to reconstruct the table from the actual pdf and should produce the following table:
@@ -20,6 +22,22 @@ this project use OCR (Optical character recognition) to reconstruct the table fr
 | ii    	| 1          	|
 
 (```Change No. 0```, not relevant here..)
+
+## webapp
+The UI looks like:
+
+<img src="images/webapp1.png">
+
+The user should drag and drop the pdf into the dashed square.
+After the upload and the ocr on the server side the UI looks like:
+
+<img src="images/webapp2.png">
+
+while the table on the left side of the screen contains the constructed table. 
+
+*the pdf column contains the page range in the pdf, helpful when the ocr doesn't recognize the page numbers (as happend in the second row)*
+
+On the right side of the screen there is a basic pdf viewer which allows to view the pdf itself. clicking on cell in the table redirects to that page on the pdf.
 
 ## algorithm
 1. break the pdf into sequence of images.
