@@ -47,3 +47,12 @@ def upload_files():
 @app.route('/uploads/<filename>')
 def upload(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+@app.route('/list')
+def list_uploades():
+    return jsonify(json.dumps(os.listdir("./uploads"))), 200
+
+@app.route('/delete/<filename>')
+def delete(filename):
+    os.remove(os.path.join("./uploads",filename))
+    return "deleted", 200
