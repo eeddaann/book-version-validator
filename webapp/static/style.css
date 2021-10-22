@@ -43,3 +43,24 @@ background:#035397;
 text-align: center;
 border: solid 3px;
 }
+
+#myProgress {
+  display: none;
+  width: 100%;
+  background-color:#85b0f2;
+  text-align: center;
+  line-height: 80%;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius: 5px;
+  padding: 5px;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #001E6C;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius: 5px
+}

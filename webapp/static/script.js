@@ -15,7 +15,27 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "static/pdf.worker.js";
 	});
 
 	}
-
+	var i = 0;
+	function move() {
+		document.getElementById("myProgress").style.display = "block";
+		var prog = document.getElementById('progText');
+		if (i == 0) {
+			i = 1;
+			var elem = document.getElementById("myBar");
+			var width = 1;
+			var id = setInterval(frame, 500);
+			function frame() {
+			if (width >= 100) {
+				clearInterval(id);
+				i = 0;
+			} else {
+				prog.innerText = width;
+				width++;
+				elem.style.width = width + "%";
+			}
+			}
+		}
+	}
 	function goToPage(i) {
 	myState.currentPage = i;
 	document.getElementById("current_page").value = myState.currentPage;
@@ -111,6 +131,7 @@ window.onload = function () {
 					if (xhr.readyState === 4) {
 						var response = JSON.parse(xhr.responseText);
 						if (xhr.status === 200) {
+							move()
 							createTable(JSON.parse(response))
 							console.log('successful');
 						} else {
