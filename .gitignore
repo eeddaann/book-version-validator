@@ -3,3 +3,5 @@
 uploads/*
 output/*
 *.pyc
+*.PDF.json
+*.pdf.json

@@ -1,6 +1,7 @@
 import pdf2image
 from tqdm import tqdm
 import os
+import json
 import pytesseract
 from PyPDF2 import PdfFileWriter, PdfFileReader 
 try:
@@ -11,8 +12,7 @@ except ImportError:
 
 
 
-def pdf_to_string_list(pdf='DOC021.PDF',footer=150) -> list:
-    # 
+def pdf_to_string_list(pdf='DOC021.PDF',footer=150, logfile=None) -> list: 
     inputpdf = PdfFileReader(open(pdf, "rb"))
     maxPages = inputpdf.numPages
     chunkSize = 10
@@ -27,6 +27,10 @@ def pdf_to_string_list(pdf='DOC021.PDF',footer=150) -> list:
             tmp_img = img.crop((0, height-footer, width, height))
             st_lst.append(pytesseract.image_to_string(tmp_img))
             # tmp_img = tmp_img.save("output/"+str(page)+".jpg") # to save images
+        if logfile is not None:
+            f = open(logfile, "w")
+            f.write(json.dumps({"status":"processing", "page":page, "pct":round((page)/maxPages,3)*100}))
+            f.close()
     return st_lst
 
 def get_page_name(st: str) -> str:
@@ -92,11 +96,11 @@ def ranges(seq):
         count += 1
     yield start, end
 
-def generate_change_lst(path):
+def generate_change_lst(path,logfile=None):
     d = {}
     bad = {}
     txt = {}
-    st_lst = pdf_to_string_list(pdf=path)
+    st_lst = pdf_to_string_list(pdf=path,logfile=logfile)
     for i in range(len(st_lst)):
         if "CHANGE" in st_lst[i].upper():
             version = st_lst[i].upper().split("CHANGE ")[-1][0] #potential bug with double digit version

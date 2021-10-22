@@ -1,5 +1,6 @@
 import imghdr
 import os, sys
+from multiprocessing import Process
 from flask import Flask, render_template, request, redirect, url_for, abort, \
     send_from_directory,json,jsonify
 from werkzeug.utils import secure_filename
@@ -11,15 +12,6 @@ app = Flask(__name__)
 app.config['UPLOAD_EXTENSIONS'] = ['.pdf',".PDF"]
 app.config['UPLOAD_PATH'] = 'uploads'
 txt = [['AIB blank', 19, (19, 19), '1']]
-'''
-['', 22, (22, 22), '1'],
-['0017 00-1/2 blank', 71, (71, 71), '1'],
-['0030 00-1 - 0030 00-2', 99, (99, 100), '1'],
-['0035 00-2', 116, (116, 116), '1'],
-['0035 00-5/6 blank', 119, (119, 119), '1'],
-['0035B 00-1/2 blank', 125, (125, 125), '1'],
-['0037 00-3 - 0037 00-4', 131, (131, 132), '1']]
-'''
 
 @app.errorhandler(413)
 def too_large(e):
@@ -40,13 +32,28 @@ def upload_files():
             return "Invalid image", 400
         upload_path = os.path.join(app.config['UPLOAD_PATH'], filename)
         uploaded_file.save(upload_path)
-        data = squeeze(generate_change_lst(upload_path))
-    files = os.listdir(app.config['UPLOAD_PATH'])
-    return jsonify(json.dumps(data)), 200
+        Process(target=preform_ocr, args=(upload_path,)).start()
+        print('/status/'+filename)
+    return jsonify({"filename":filename}), 200
+
+def preform_ocr(upload_path):
+    f = open(upload_path+".json", "w")
+    f.write(json.dumps({"status":"processing","page":1, "pct":0}))
+    f.close()
+    data = squeeze(generate_change_lst(upload_path,logfile=upload_path+".json"))
+    f = open(upload_path+".json", "w")
+    f.write(json.dumps(data))
+    f.close()
+    #return jsonify(json.dumps(data)), 200
+
 
 @app.route('/uploads/<filename>')
 def upload(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+@app.route('/status/<filename>')
+def status(filename):
+    return send_from_directory(app.config['UPLOAD_PATH'], filename+".json")
 
 @app.route('/list')
 def list_uploades():
