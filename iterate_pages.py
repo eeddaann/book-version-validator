@@ -29,8 +29,12 @@ def pdf_to_string_list(pdf='DOC021.PDF',footer=150, logfile=None) -> list:
             # tmp_img = tmp_img.save("output/"+str(page)+".jpg") # to save images
         if logfile is not None:
             f = open(logfile, "w")
-            f.write(json.dumps({"status":"processing", "page":page, "pct":round((page)/maxPages,3)*100}))
+            f.write(json.dumps({"status":"processing", "page":page, "pct":round(page/maxPages*100,1)}))
             f.close()
+    if logfile is not None:
+        f = open(logfile, "w")
+        f.write(json.dumps({"status":"processing", "page":maxPages, "pct":100}))
+        f.close()
     return st_lst
 
 def get_page_name(st: str) -> str:
@@ -85,6 +89,8 @@ def iterate(path='./output'):
 
 
 def ranges(seq):
+    if len(seq) < 1:
+        return 0,0
     start, end = seq[0], seq[0]
     count = start
     for item in seq:

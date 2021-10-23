@@ -7,6 +7,9 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "static/pdf.worker.js";
 	}
 	function createTable(data) {
 	var table = document.getElementById('resultTable');
+	if (data.length < 1) {
+		table.innerHTML = "No changes found in this pdf 🤷‍♂️"
+	}
 	data.forEach(function(object) {
 		var tr = document.createElement('tr');
 		tr.innerHTML = '<td onclick="goToPage('+object[1]+')">' + object[0] + '</td>' +
@@ -16,25 +19,42 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "static/pdf.worker.js";
 
 	}
 	var i = 0;
-	function move() {
+	function move(filename) {
+		resp = "blaa"
 		document.getElementById("myProgress").style.display = "block";
 		var prog = document.getElementById('progText');
 		if (i == 0) {
 			i = 1;
 			var elem = document.getElementById("myBar");
 			var width = 1;
-			var id = setInterval(frame, 500);
+			var id = setInterval(frame, 1000);
 			function frame() {
-			if (width >= 100) {
-				clearInterval(id);
-				i = 0;
-			} else {
-				prog.innerText = width;
-				width++;
-				elem.style.width = width + "%";
+				if (width >= 100) {
+					clearInterval(id);
+					i = 0;
+				} else {
+					const xhttp = new XMLHttpRequest();
+					xhttp.onload = function() {
+						resp = JSON.parse(this.responseText)
+						if (!('status' in resp)) {
+							width = 100
+							clearInterval(id);
+							i = 0;
+							createTable(resp)
+							document.getElementById("myProgress").style.display = "none";
+						}
+						prog.innerText = resp.pct+ "%";
+						width = resp.pct
+					}
+					xhttp.open("GET", "status/"+filename);
+					xhttp.send();
+					//prog.innerText = width;
+					//width++;
+					elem.style.width = width + "%";
+				}
 			}
-			}
-		}
+			return resp
+		} 
 	}
 	function goToPage(i) {
 	myState.currentPage = i;
@@ -131,8 +151,7 @@ window.onload = function () {
 					if (xhr.readyState === 4) {
 						var response = JSON.parse(xhr.responseText);
 						if (xhr.status === 200) {
-							move()
-							createTable(JSON.parse(response))
+							data = move(file.name);
 							console.log('successful');
 						} else {
 							console.log('failed');

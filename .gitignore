@@ -5,3 +5,4 @@ output/*
 *.pyc
 *.PDF.json
 *.pdf.json
+webapp/uploads/*
