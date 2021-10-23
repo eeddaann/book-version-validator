@@ -12,5 +12,6 @@ RUN apt-get update \
 # The code to run when container is started:
 COPY iterate_pages.py .
 COPY webapp/ ./webapp
+RUN apt install -y vim
 RUN cd webapp
-CMD cd webapp && conda run --no-capture-output -n ocr flask run --host=0.0.0.0
+CMD cd webapp && flask run --host=0.0.0.0

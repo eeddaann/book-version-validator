@@ -6,3 +6,4 @@ output/*
 *.PDF.json
 *.pdf.json
 webapp/uploads/*
+bookversion.tar.gz
